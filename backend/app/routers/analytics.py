@@ -7,12 +7,14 @@ from app.models.car import CarModel
 from app.models.inquiry import InquiryModel
 from app.models.sell_request import SellRequestModel
 from app.models.test_drive import TestDriveModel
+from app.models.user import UserModel
+from app.routers.auth import get_current_admin
 from app.schemas.analytics import DashboardAnalyticsResponse, BrandStat
 
 router = APIRouter(prefix="/api/analytics", tags=["Analytics"])
 
 @router.get("/dashboard", response_model=DashboardAnalyticsResponse)
-def get_dashboard_analytics(db: Session = Depends(get_db)):
+def get_dashboard(db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     total_cars = db.query(func.count(CarModel.id)).scalar() or 0
     total_value = db.query(func.sum(CarModel.price)).scalar() or 0
     certified_cars = db.query(func.count(CarModel.id)).filter(CarModel.condition == "Certified").scalar() or 0

@@ -5,6 +5,8 @@ from sqlalchemy import desc
 
 from app.database import get_db
 from app.models.inquiry import InquiryModel
+from app.models.user import UserModel
+from app.routers.auth import get_current_admin
 from app.schemas.inquiry import InquiryCreate, InquiryUpdate, InquiryResponse
 
 router = APIRouter(prefix="/api/inquiries", tags=["Inquiries"])
@@ -12,8 +14,7 @@ router = APIRouter(prefix="/api/inquiries", tags=["Inquiries"])
 @router.get("", response_model=List[InquiryResponse])
 def get_inquiries(
     status_filter: Optional[str] = None,
-    db: Session = Depends(get_db),
-):
+    db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     query = db.query(InquiryModel)
     if status_filter:
         query = query.filter(InquiryModel.status.ilike(status_filter))
@@ -40,8 +41,7 @@ def create_inquiry(inquiry_in: InquiryCreate, db: Session = Depends(get_db)):
 def update_inquiry_status(
     inquiry_id: int,
     inquiry_in: InquiryUpdate,
-    db: Session = Depends(get_db),
-):
+    db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     inquiry = db.query(InquiryModel).filter(InquiryModel.id == inquiry_id).first()
     if not inquiry:
         raise HTTPException(status_code=404, detail="Inquiry not found")
@@ -52,7 +52,7 @@ def update_inquiry_status(
     return inquiry
 
 @router.delete("/{inquiry_id}", status_code=status.HTTP_200_OK)
-def delete_inquiry(inquiry_id: int, db: Session = Depends(get_db)):
+def delete_inquiry(inquiry_id: int, db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     inquiry = db.query(InquiryModel).filter(InquiryModel.id == inquiry_id).first()
     if not inquiry:
         raise HTTPException(status_code=404, detail="Inquiry not found")

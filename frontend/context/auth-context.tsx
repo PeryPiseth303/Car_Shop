@@ -154,10 +154,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem(USER_KEY);
     localStorage.removeItem("favorites");
     localStorage.removeItem("cart");
-    localStorage.removeItem("compare");
     window.dispatchEvent(new CustomEvent("local-cars-change", { detail: "favorites" }));
     window.dispatchEvent(new CustomEvent("local-cars-change", { detail: "cart" }));
-    window.dispatchEvent(new CustomEvent("local-cars-change", { detail: "compare" }));
     setToken(null);
     setUser(null);
     window.location.href = "/";

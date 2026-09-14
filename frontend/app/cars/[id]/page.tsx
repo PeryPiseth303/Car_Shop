@@ -22,8 +22,6 @@ import { ImageGallery } from "@/components/cars/image-gallery";
 import { DetailActions } from "@/components/cars/detail-actions";
 import { CarGrid } from "@/components/cars/car-grid";
 import { FavoriteButton } from "@/components/cars/favorite-button";
-import { CompareButton } from "@/components/cars/compare-button";
-
 export function generateStaticParams() {
   return cars.map((c) => ({ id: c.id }));
 }
@@ -87,7 +85,6 @@ export default async function Detail({
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <CompareButton id={car.id} size="md" />
                 <FavoriteButton id={car.id} size="md" />
               </div>
             </div>
@@ -281,3 +278,4 @@ export default async function Detail({
     </div>
   );
 }
+

@@ -5,6 +5,8 @@ from sqlalchemy import desc
 
 from app.database import get_db
 from app.models.test_drive import TestDriveModel
+from app.models.user import UserModel
+from app.routers.auth import get_current_admin
 from app.schemas.test_drive import TestDriveCreate, TestDriveUpdate, TestDriveResponse
 
 router = APIRouter(prefix="/api/test-drives", tags=["Test Drives"])
@@ -12,8 +14,7 @@ router = APIRouter(prefix="/api/test-drives", tags=["Test Drives"])
 @router.get("", response_model=List[TestDriveResponse])
 def get_test_drives(
     status_filter: Optional[str] = None,
-    db: Session = Depends(get_db),
-):
+    db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     query = db.query(TestDriveModel)
     if status_filter:
         query = query.filter(TestDriveModel.status.ilike(status_filter))
@@ -42,8 +43,7 @@ def create_test_drive(td_in: TestDriveCreate, db: Session = Depends(get_db)):
 def update_test_drive_status(
     td_id: int,
     td_in: TestDriveUpdate,
-    db: Session = Depends(get_db),
-):
+    db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     td = db.query(TestDriveModel).filter(TestDriveModel.id == td_id).first()
     if not td:
         raise HTTPException(status_code=404, detail="Test drive appointment not found")
@@ -60,7 +60,7 @@ def update_test_drive_status(
     return td
 
 @router.delete("/{td_id}", status_code=status.HTTP_200_OK)
-def delete_test_drive(td_id: int, db: Session = Depends(get_db)):
+def delete_test_drive(test_drive_id: int, db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     td = db.query(TestDriveModel).filter(TestDriveModel.id == td_id).first()
     if not td:
         raise HTTPException(status_code=404, detail="Test drive appointment not found")

@@ -5,6 +5,8 @@ from sqlalchemy import desc
 
 from app.database import get_db
 from app.models.sell_request import SellRequestModel
+from app.models.user import UserModel
+from app.routers.auth import get_current_admin
 from app.schemas.sell_request import SellRequestCreate, SellRequestUpdate, SellRequestResponse
 
 router = APIRouter(prefix="/api/sell-requests", tags=["Sell Requests"])
@@ -12,8 +14,7 @@ router = APIRouter(prefix="/api/sell-requests", tags=["Sell Requests"])
 @router.get("", response_model=List[SellRequestResponse])
 def get_sell_requests(
     status_filter: Optional[str] = None,
-    db: Session = Depends(get_db),
-):
+    db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     query = db.query(SellRequestModel)
     if status_filter:
         query = query.filter(SellRequestModel.status.ilike(status_filter))
@@ -49,8 +50,7 @@ def create_sell_request(sell_in: SellRequestCreate, db: Session = Depends(get_db
 def update_sell_request_status(
     request_id: int,
     sell_in: SellRequestUpdate,
-    db: Session = Depends(get_db),
-):
+    db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     req = db.query(SellRequestModel).filter(SellRequestModel.id == request_id).first()
     if not req:
         raise HTTPException(status_code=404, detail="Sell request not found")
@@ -61,7 +61,7 @@ def update_sell_request_status(
     return req
 
 @router.delete("/{request_id}", status_code=status.HTTP_200_OK)
-def delete_sell_request(request_id: int, db: Session = Depends(get_db)):
+def delete_sell_request(sell_request_id: int, db: Session = Depends(get_db), admin: UserModel = Depends(get_current_admin)):
     req = db.query(SellRequestModel).filter(SellRequestModel.id == request_id).first()
     if not req:
         raise HTTPException(status_code=404, detail="Sell request not found")

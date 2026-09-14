@@ -11,7 +11,6 @@ const groups = [
     links: [
       { name: "Cars", href: "/cars" },
       { name: "Brands", href: "/brands" },
-      { name: "Compare", href: "/compare" },
       { name: "My Cart", href: "/cart" },
     ],
   },
@@ -137,9 +136,6 @@ export function Footer() {
             <Link href="/about" className="transition hover:text-white">
               {t("About")}
             </Link>
-            <Link href="/compare" className="transition hover:text-white">
-              {t("Compare")}
-            </Link>
             <Link href="/contact" className="transition hover:text-white">
               {t("Contact")}
             </Link>
@@ -155,3 +151,4 @@ export function Footer() {
     </footer>
   );
 }
+

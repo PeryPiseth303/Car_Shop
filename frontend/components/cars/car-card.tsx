@@ -4,8 +4,6 @@ import { Fuel, Gauge, MapPin, Settings2, ArrowUpRight, ShieldCheck } from "lucid
 import { Car } from "@/types/car";
 import { money, number } from "@/lib/utils";
 import { FavoriteButton } from "./favorite-button";
-import { CompareButton } from "./compare-button";
-
 export function CarCard({ car }: { car: Car }) {
   const isCertified = car.condition === "Certified";
 
@@ -44,7 +42,6 @@ export function CarCard({ car }: { car: Car }) {
 
         {/* Action Buttons */}
         <div className="absolute right-3.5 top-3.5 z-10 flex items-center gap-1.5">
-          <CompareButton id={car.id} size="sm" />
           <FavoriteButton id={car.id} size="sm" />
         </div>
 
@@ -101,3 +98,4 @@ export function CarCard({ car }: { car: Car }) {
     </Link>
   );
 }
+

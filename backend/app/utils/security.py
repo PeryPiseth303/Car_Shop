@@ -7,35 +7,42 @@ import time
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
 
+import os
 # Secret key used for signing tokens (can be configured in .env)
-SECRET_KEY = "aurelia-motors-super-secure-secret-key-2026-luxury-motors-jwt-auth"
+SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "fallback-secret-key-for-dev")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 # Reduced from 7 days for security
 
+
+import bcrypt
 
 def hash_password(password: str, salt: Optional[str] = None) -> tuple[str, str]:
     """
-    Hash a password using PBKDF2 HMAC SHA-256 with a unique salt.
-    Returns (salt, hashed_password_hex).
+    Hash a password using bcrypt. Returns (salt_string, hashed_password_string).
     """
     if salt is None:
-        salt = secrets.token_hex(16)
-    
+        salt_bytes = bcrypt.gensalt(rounds=12)
+        salt = salt_bytes.decode('utf-8')
+    else:
+        salt_bytes = salt.encode('utf-8')
+        
     pwd_bytes = password.encode("utf-8")
-    salt_bytes = salt.encode("utf-8")
+    hash_bytes = bcrypt.hashpw(pwd_bytes, salt_bytes)
     
-    hash_bytes = hashlib.pbkdf2_hmac("sha256", pwd_bytes, salt_bytes, 100_000)
-    hash_hex = hash_bytes.hex()
-    
-    return salt, hash_hex
+    return salt, hash_bytes.decode('utf-8')
 
 
 def verify_password(password: str, salt: str, password_hash: str) -> bool:
     """
-    Verify whether the given plain password matches the hashed password.
+    Verify whether the given plain password matches the bcrypt hashed password.
     """
-    _, check_hash = hash_password(password, salt)
-    return hmac.compare_digest(check_hash, password_hash)
+    pwd_bytes = password.encode("utf-8")
+    hash_bytes = password_hash.encode("utf-8")
+    
+    try:
+        return bcrypt.checkpw(pwd_bytes, hash_bytes)
+    except ValueError:
+        return False
 
 
 def generate_otp_code(length: int = 6) -> str:

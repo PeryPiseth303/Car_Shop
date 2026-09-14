@@ -261,3 +261,6 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Enable class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));

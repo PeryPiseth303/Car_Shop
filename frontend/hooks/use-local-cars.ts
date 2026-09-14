@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 import { apiAddToCart, apiRemoveFromCart } from "@/lib/api";
 
-export type LocalCarKey = "favorites" | "cart" | "compare";
+export type LocalCarKey = "favorites" | "cart";
 
 const changeEvent = "local-cars-change";
 

@@ -7,6 +7,8 @@ from app.database import get_db
 from app.models.cart import CartItemModel
 from app.models.car import CarModel
 from app.schemas.car import CarResponse
+from app.routers.auth import get_current_user
+from app.models.user import UserModel
 
 router = APIRouter(prefix="/api/cart", tags=["Cart"])
 
@@ -15,13 +17,10 @@ class CartAddRequest(BaseModel):
     car_id: str
 
 @router.get("", response_model=List[CarResponse])
-def get_user_cart(
-    email: str = Query(..., description="User's email"),
-    db: Session = Depends(get_db),
-):
+def get_user_cart(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     cart_items = (
         db.query(CartItemModel)
-        .filter(CartItemModel.user_email == email.lower().strip())
+        .filter(CartItemModel.user_email == current_user.email))
         .order_by(CartItemModel.created_at.desc())
         .all()
     )
@@ -29,11 +28,8 @@ def get_user_cart(
     return cars
 
 @router.post("", status_code=status.HTTP_201_CREATED)
-def add_to_cart(
-    payload: CartAddRequest,
-    db: Session = Depends(get_db),
-):
-    email = payload.email.lower().strip()
+def add_to_cart(payload: CartAddRequest, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    email = current_user.email
     car = db.query(CarModel).filter(CarModel.id == payload.car_id).first()
     if not car:
         raise HTTPException(
@@ -58,12 +54,8 @@ def add_to_cart(
     return {"message": "Car added to cart successfully", "car_id": payload.car_id}
 
 @router.delete("/{car_id}")
-def remove_from_cart(
-    car_id: str,
-    email: str = Query(..., description="User's email"),
-    db: Session = Depends(get_db),
-):
-    norm_email = email.lower().strip()
+def remove_from_cart(car_id: str, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    norm_email = current_user.email
     item = (
         db.query(CartItemModel)
         .filter(
@@ -78,11 +70,8 @@ def remove_from_cart(
     return {"message": "Car removed from cart successfully", "car_id": car_id}
 
 @router.delete("")
-def clear_cart(
-    email: str = Query(..., description="User's email"),
-    db: Session = Depends(get_db),
-):
-    norm_email = email.lower().strip()
+def clear_cart(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    norm_email = current_user.email
     db.query(CartItemModel).filter(CartItemModel.user_email == norm_email).delete()
     db.commit()
     return {"message": "Cart cleared successfully"}

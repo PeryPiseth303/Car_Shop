@@ -23,7 +23,6 @@ import { useLanguage } from "@/hooks/use-language";
 import { useLocalCars } from "@/hooks/use-local-cars";
 import { useAuth } from "@/context/auth-context";
 import { SearchModal } from "@/components/search/search-modal";
-import { CompareBar } from "@/components/layout/compare-bar";
 
 const links = [
   ["Home", "/"],
@@ -39,10 +38,8 @@ export function Navbar() {
   const path = usePathname();
   const { language, t, toggleLanguage } = useLanguage();
   const { ids: cartIds } = useLocalCars("cart");
-  const { ids: compareIds } = useLocalCars("compare");
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const cartCount = cartIds.length;
-  const compareCount = compareIds.length;
 
   const languageButton = (
     <button
@@ -136,24 +133,6 @@ export function Navbar() {
 
             {languageButton}
 
-            {/* Compare Badge Link */}
-            <Link
-              aria-label={t("Compare")}
-              title={t("Compare")}
-              href="/compare"
-              className="relative grid size-9.5 place-items-center rounded-full border border-neutral-200/80 bg-white/80 text-neutral-700 shadow-xs transition hover:border-neutral-300 hover:bg-neutral-50 hover:text-black active:scale-95"
-            >
-              <ArrowLeftRight
-                size={16}
-                className={compareCount > 0 ? "text-[#ef3f32]" : ""}
-              />
-              {compareCount > 0 && (
-                <span className="absolute -right-1 -top-1 grid size-4.5 place-items-center rounded-full bg-[#111214] text-[10px] font-extrabold text-white ring-2 ring-white">
-                  {compareCount}
-                </span>
-              )}
-            </Link>
-
             {/* Cart Badge Link */}
             <Link
               aria-label={t("Cart")}
@@ -238,22 +217,6 @@ export function Navbar() {
             {languageButton}
 
             <Link
-              aria-label={t("Compare")}
-              href="/compare"
-              className="relative grid size-9 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-700 active:scale-95"
-            >
-              <ArrowLeftRight
-                size={16}
-                className={compareCount > 0 ? "text-[#ef3f32]" : ""}
-              />
-              {compareCount > 0 && (
-                <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-[#111214] text-[9px] font-extrabold text-white">
-                  {compareCount}
-                </span>
-              )}
-            </Link>
-
-            <Link
               aria-label={t("Cart")}
               href="/cart"
               className="relative grid size-9 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-700 active:scale-95"
@@ -309,22 +272,6 @@ export function Navbar() {
                     </Link>
                   );
                 })}
-
-                <Link
-                  onClick={() => setOpen(false)}
-                  href="/compare"
-                  className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-neutral-700 transition hover:bg-neutral-50"
-                >
-                  <span className="flex items-center gap-2">
-                    <ArrowLeftRight size={16} className={compareCount > 0 ? "text-[#ef3f32]" : ""} />
-                    {t("Compare")}
-                  </span>
-                  {compareCount > 0 && (
-                    <span className="rounded-full bg-[#111214] px-2 py-0.5 text-[10px] font-bold text-white">
-                      {compareCount}
-                    </span>
-                  )}
-                </Link>
 
                 <Link
                   onClick={() => setOpen(false)}
@@ -406,9 +353,7 @@ export function Navbar() {
 
       {/* Global Search Modal */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-
-      {/* Persistent Floating Compare Bar */}
-      <CompareBar />
     </>
   );
 }
+

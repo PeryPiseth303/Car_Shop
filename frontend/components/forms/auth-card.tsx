@@ -160,7 +160,7 @@ export function AuthCard({ mode }: AuthCardProps) {
 
       setTimeout(() => {
         if (result.user.role === "admin" && result.user.email?.toLowerCase() === ADMIN_EMAIL) {
-          router.push("/admin");
+          router.push("/mgmt-portal-8x2");
         } else {
           router.push("/");
         }
@@ -448,17 +448,6 @@ export function AuthCard({ mode }: AuthCardProps) {
                   {mode === "login" ? t("Create account") : t("Sign in")}
                 </Link>
               </p>
-              {mode === "login" && (
-                <div className="mt-3 text-center">
-                  <Link
-                    href="/admin/login"
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-400 hover:text-neutral-900 transition"
-                  >
-                    <Lock size={11} className="text-[#ef3f32]" />
-                    <span>Admin Portal Sign In &rarr;</span>
-                  </Link>
-                </div>
-              )}
             </>
           ) : (
             <p className="mt-7 text-center text-xs text-neutral-500 border-t border-neutral-100 pt-5">

@@ -1,0 +1,30 @@
+export interface Car {
+  id: string;
+  brand: string;
+  model: string;
+  year: number;
+  price: number;
+  mileage: number;
+  mileage_km?: number;
+  transmission: "Automatic" | "Manual" | string;
+  fuelType: string;
+  fuel_type?: string;
+  bodyType: string;
+  body_type?: string;
+  engine: string;
+  horsepower: number;
+  hp?: number;
+  acceleration_0_100?: string;
+  top_speed_kmh?: number;
+  color: string;
+  interiorColor: string;
+  location: string;
+  description: string;
+  images: string[];
+  image_url?: string;
+  features: string[];
+  featured: boolean;
+  condition: string;
+  seats: number;
+  driveType: string;
+}

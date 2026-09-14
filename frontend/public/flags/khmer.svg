@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 36" role="img" aria-label="Khmer language">
+  <path fill="#032ea1" d="M0 0h60v9H0zm0 27h60v9H0z"/>
+  <path fill="#e00025" d="M0 9h60v18H0z"/>
+  <g fill="#fff">
+    <path d="M15 23h30v2H15zM18 20h24v2H18zM21 17h18v2H21z"/>
+    <path d="M23 13h4v5h-4zm10 0h4v5h-4zm-5-3h4v8h-4z"/>
+    <path d="M20 15h20l3 5H17z"/>
+  </g>
+</svg>

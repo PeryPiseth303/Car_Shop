@@ -1,0 +1,263 @@
+@import "tailwindcss";
+@import "swiper/css";
+@import "swiper/css/navigation";
+
+:root {
+  --accent: #ef3f32;
+  --accent-hover: #dc2f22;
+  --accent-light: #fff0ee;
+  --accent-glow: rgba(239, 63, 50, 0.18);
+  --ink: #111214;
+  --ink-light: #2a2d32;
+  --muted: #6b7280;
+  --paper: #f9f9f7;
+  --card-bg: #ffffff;
+  --border-subtle: #eaeae6;
+  --border-medium: #deded8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: #fafaf9;
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.serif {
+  font-family: var(--font-serif), Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+/* Khmer Localization Support */
+[lang="km"] body {
+  font-family: var(--font-battambang), var(--font-sans), sans-serif;
+  line-height: 1.7;
+}
+
+[lang="km"] .serif {
+  font-family: var(--font-battambang), sans-serif;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+[lang="km"] .eyebrow {
+  letter-spacing: 0.05em;
+  text-transform: none;
+  line-height: 1.6;
+}
+
+[lang="km"] .btn,
+[lang="km"] .input,
+[lang="km"] .label {
+  font-family: var(--font-battambang), sans-serif;
+}
+
+/* Layout Utilities */
+.container {
+  width: min(1240px, calc(100% - 48px));
+  margin-inline: auto;
+}
+
+.section {
+  padding: 100px 0;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: min(100% - 32px, 1240px);
+  }
+  .section {
+    padding: 64px 0;
+  }
+}
+
+/* Typography & Eyebrow */
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 9999px;
+  padding: 12px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-dark {
+  background-color: #111214;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.btn-dark:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--accent-glow);
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.btn-accent:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(239, 63, 50, 0.35);
+}
+
+.btn-light {
+  background-color: #ffffff;
+  color: #111214;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.btn-light:hover {
+  background-color: #f4f4f2;
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  border: 1px solid var(--border-medium);
+  background-color: #ffffff;
+  color: #111214;
+}
+
+.btn-outline:hover {
+  border-color: #111214;
+  background-color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Modern Card System */
+.card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 28px -6px rgba(17, 18, 20, 0.04), 0 2px 8px -2px rgba(17, 18, 20, 0.02);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover:hover {
+  border-color: rgba(17, 18, 20, 0.18);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(17, 18, 20, 0.09), 0 4px 12px -2px rgba(17, 18, 20, 0.03);
+}
+
+/* Glassmorphism */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.glass-panel-dark {
+  background: rgba(17, 18, 20, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Inputs & Form Controls */
+.input {
+  width: 100%;
+  border: 1px solid var(--border-medium);
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 13px 16px;
+  outline: none;
+  font-size: 14px;
+  color: var(--ink);
+  transition: all 0.2s ease;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.input:focus {
+  border-color: #111214;
+  box-shadow: 0 0 0 3.5px rgba(17, 18, 20, 0.06);
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 7px;
+  color: #374151;
+  letter-spacing: 0.01em;
+}
+
+/* Badges & Chips */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-dark {
+  background-color: rgba(17, 18, 20, 0.88);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+}
+
+.badge-accent {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+.badge-certified {
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Scrollbar Utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
